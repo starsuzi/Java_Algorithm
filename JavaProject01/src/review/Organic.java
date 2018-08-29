@@ -1,5 +1,5 @@
 //baekjoon 1012
-package Example0828;
+package review;
 
 import java.util.Scanner;
 
