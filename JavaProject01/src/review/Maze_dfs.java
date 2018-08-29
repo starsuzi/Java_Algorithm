@@ -20,6 +20,7 @@ public class Maze_dfs {
 		N = sc.nextInt();
 		M = sc.nextInt();
 
+		visited = new int[N][M];
 		map = new int[N][M];
 
 		for (int y = 0; y < N; y++) {
@@ -44,22 +45,20 @@ public class Maze_dfs {
 
 		distance = Integer.MAX_VALUE;
 
-		dfs(0,0,0);
+		dfs(0,0,1);
 		System.out.println(distance);
 
 	}
 
 	public static void dfs (int y, int x, int current) {
 		//System.out.println("("+x+","+y+")");
-		
-		current++;
+
 		//0.도달?
 		if(y==N-1 && x == M-1) {
 			//아니면 distance에 최소값을 넣고 다시 시작
 			if(current<distance) {
 				//System.out.println("end");
 				distance = current;
-				current = 0;
 			}
 			//최소
 			else {
@@ -69,7 +68,7 @@ public class Maze_dfs {
 		
 
 		//1.방문체크
-		map[y][x] = map[y][x] + 2;
+		visited[y][x] = current;
 		//2.연결된길
 		for (int i = 0; i < 4; i++) {
 			int targetY = y+dy[i];
@@ -77,14 +76,17 @@ public class Maze_dfs {
 			//3.갈수있는길
 			if(targetY>=0 && targetY<N && targetX>=0 && targetX<M&& map[targetY][targetX] == 1) {
 				//4.간다
-				dfs(targetY, targetX,current);
+				if(visited[targetY][targetX] == 0 || visited[targetY][targetX] > current+1) {
+					dfs(targetY, targetX,current+1);		
+				}
+			
 				
 			}
 
 		}
 		
 		//5.방문해제
-		map[y][x] = map[y][x] - 2; 
+	//	map[y][x] = map[y][x] - 2; 
 
 
 	}
