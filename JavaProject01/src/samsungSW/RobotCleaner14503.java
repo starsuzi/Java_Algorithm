@@ -59,22 +59,27 @@ public class RobotCleaner14503 {
 					dfs(targetX, targetY, newDir);
 				}
 				else if(map[targetY][targetX] == 2) {
-					newDir = left(targetX, targetY, dir);
+					
+					if(isBlocked(targetX, targetY) == false) {
+						dfs(targetX, targetY, newDir);	
+					}
 
 					
 				}
 				else if(map[targetY][targetX] == 1) {
-					newDir = left(targetX, targetY, dir);
 					
+					if(isBlocked(targetX, targetY) == false) {
+						dfs(targetX, targetY, newDir);	
+					}
 					
 				}
 			}			
 
 	}
 
-	static boolean goBack(int currentX, int currentY) {
+	//static boolean goBack(int currentX, int currentY) {
 		
-	}
+//	}
 	
 	//네방향이 모두 청소||벽
 	static boolean isBlocked(int currentX, int currentY) {
@@ -84,11 +89,11 @@ public class RobotCleaner14503 {
 			
 			if(targetY >= 0 && targetY<N && targetX >= 0 && targetX <M) {
 				if(map[targetY][targetX] == 0) {
-					return true;
+					return false;
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 	
 
