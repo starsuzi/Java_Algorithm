@@ -40,14 +40,18 @@ public class Runway14890 {
 
 		int colCount=0;
 		int count =0 ;
-		for (int i = 0; i < N*N; i++) {
-			
+		int[] row = new int[N];
+
+
+		for (int x = 0; x < N; x++) {
+			row[x] = map[0][x];
 		}
+
 		return colCount;
-		
+
 	}
-	
-	
+
+
 
 	static int rowCheck(int m[][]) {
 		int rowCount=0;
