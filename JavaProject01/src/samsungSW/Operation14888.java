@@ -10,6 +10,7 @@ public class Operation14888 {
 	static int indexOfOper;
 	static boolean[] visited;
 	static char[] arrayOfoper;
+	static char[] history;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -21,6 +22,7 @@ public class Operation14888 {
 		oper = new int[4];
 		visited = new boolean[2*N-1];
 		arrayOfoper = new char[N-1];
+		history = new char[N-1];
 
 
 		//숫자
@@ -47,8 +49,8 @@ public class Operation14888 {
 					for (int i = sum ; i < N-1; i++) {
 						arrayOfoper[i] = intToOper(j);
 						count--;
-						System.out.println(arrayOfoper[i]);
-						System.out.println(count);
+					//	System.out.println(arrayOfoper[i]);
+					//	System.out.println(count);
 					}	
 					sum = sum+oper[j];
 				}
@@ -58,19 +60,23 @@ public class Operation14888 {
 
 		//print
 		for (int i = 0; i < 2*N-1; i++) {
-			System.out.print(map[i]);
+			//System.out.print(map[i]);
 		}
-		System.out.println();
+		//System.out.println();
 
 		for (int i = 0; i < 4; i++) {
-			System.out.print(oper[i]);
+			//System.out.print(oper[i]);
 		}
 
 		for (int i = 0; i < arrayOfoper.length; i++) {
-			System.out.print(arrayOfoper[i]);
+			//System.out.print(arrayOfoper[i]);
 		}
 
-
+		for (int i = 0; i < 4; i++) {
+			dfs(i,0); //i는 연산자
+		}
+		
+		
 	}
 
 	static char intToOper (int n) {
@@ -110,22 +116,33 @@ public class Operation14888 {
 
 	static void dfs(int current, int depth) {
 		//0.도달했는지
-		if(depth == map.length) {
-
+		if(depth == arrayOfoper.length-1) {
+			
+			history[depth] = arrayOfoper[current];
+			
+			for (int i = 0; i < history.length; i++) {
+				System.out.print(history[i]);
+			}
 		}
 		//1.방문체크
-
+		
+		for (int i = 0; i < history.length; i++) {
+			System.out.print(history[i]);
+		}
+		
+		visited[current]= true;
+		history[depth] = arrayOfoper[current];
+		
 		//2.연결된길
-		for (int i = 0; i < map.length; i++) {
+		for (int i = 0; i < arrayOfoper.length; i++) {
 			//3.갈수있는길
 			if(visited[i] == false) {
 				//4.간다
-				//dfs();
+				dfs(i,depth++);
 			}
-
 		}
-
 		//5.방문해지
+		visited[current] = false;
 	}
 
 
