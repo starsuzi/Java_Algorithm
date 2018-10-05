@@ -5,12 +5,14 @@ import java.util.Scanner;
 public class Operation14888 {
 
 	static int N;
-	static int[] map;
+	static int[] number;
 	static int[] oper;
 	static int indexOfOper;
 	static boolean[] visited;
-	static char[] arrayOfoper;
-	static char[] history;
+	static int[] arrayOfoper;
+	static int[] history;
+	static int max=Integer.MIN_VALUE;
+	static int min=Integer.MAX_VALUE;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -18,19 +20,19 @@ public class Operation14888 {
 
 		N = sc.nextInt();
 
-		map = new int[2*N-1];
+		number = new int[N];
 		oper = new int[4];
-		visited = new boolean[2*N-1];
-		arrayOfoper = new char[N-1];
-		history = new char[N-1];
+		visited = new boolean[N-1];
+		arrayOfoper = new int[N-1];
+		history = new int[N-1];
 
 
 		//숫자
-		for (int i = 0; i < 2*N-1; i++) {
-			if(i%2==0) {
-				map[i] = sc.nextInt();	
-				visited[i] = true;
-			}
+		for (int i = 0; i < N; i++) {
+			
+				number[i] = sc.nextInt();	
+			
+			
 		}
 
 		//연산자
@@ -47,7 +49,8 @@ public class Operation14888 {
 				count = oper[j];
 				while(count>0) {
 					for (int i = sum ; i < N-1; i++) {
-						arrayOfoper[i] = intToOper(j);
+						//arrayOfoper[i] = intToOper(j);
+						arrayOfoper[i] = j;
 						count--;
 					//	System.out.println(arrayOfoper[i]);
 					//	System.out.println(count);
@@ -69,32 +72,20 @@ public class Operation14888 {
 		}
 
 		for (int i = 0; i < arrayOfoper.length; i++) {
-			//System.out.print(arrayOfoper[i]);
+		//	System.out.print(arrayOfoper[i]);
 		}
 
-		for (int i = 0; i < 4; i++) {
+		//dfs
+		for (int i = 0; i < arrayOfoper.length; i++) {
 			dfs(i,0); //i는 연산자
 		}
+
+		for (int i = 0; i < history.length; i++) {
+		//	System.out.print(history[i]);
+		}
 		
-		
-	}
-
-	static char intToOper (int n) {
-
-		if(n == 0) {
-			return '+';
-		}
-		else if(n==1) {
-			return '-';
-		}
-		else if(n==2) {
-			return '*';
-		}
-		else {
-			return '/';
-		}
-
-
+		System.out.println(max);
+		System.out.println(min);
 	}
 
 	static int calculate(int n, int a, int b) {
@@ -114,31 +105,61 @@ public class Operation14888 {
 
 	}
 
+
+	
 	static void dfs(int current, int depth) {
+		int a, b , result =0;
 		//0.도달했는지
 		if(depth == arrayOfoper.length-1) {
 			
 			history[depth] = arrayOfoper[current];
 			
 			for (int i = 0; i < history.length; i++) {
-				System.out.print(history[i]);
+			//	System.out.print(history[i]+" ");
 			}
+			
+			//System.out.println();
+			
+			for (int i = 0; i < number.length-1; i++) {
+				a = number[i];
+				if(i==0) {
+					result = a;
+				}
+				
+				b = number[i+1];
+				result = calculate(history[i], result, b);
+				
+			}
+			
+			//System.out.println(result);
+			
+			if(result < min) {
+				min = result;
+			}
+			
+			if(result > max) {
+				max = result;
+			}
+			
+			return;
 		}
 		//1.방문체크
+		//System.out.println();
 		
 		for (int i = 0; i < history.length; i++) {
-			System.out.print(history[i]);
+	 //	System.out.print(history[i]);
 		}
 		
 		visited[current]= true;
 		history[depth] = arrayOfoper[current];
+	//	System.out.println(current+"current"+arrayOfoper[current]+"arr[current]"+depth+"depth");
 		
 		//2.연결된길
 		for (int i = 0; i < arrayOfoper.length; i++) {
 			//3.갈수있는길
 			if(visited[i] == false) {
 				//4.간다
-				dfs(i,depth++);
+				dfs(i,depth+1);
 			}
 		}
 		//5.방문해지
