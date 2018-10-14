@@ -86,7 +86,7 @@ public class Chicken15686 {
 			if(result>tmp) {
 				result = tmp;
 			}
-			
+			ChickenLocation[depth] = null;
 			return;
 		}
 
