@@ -2,7 +2,6 @@ package samsungSW;
 
 import java.util.Scanner;
 
-
 public class Chicken15686 {
 
 	static int N, M;
@@ -18,7 +17,6 @@ public class Chicken15686 {
 	static int tmp;
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
 
 		N = sc.nextInt();
@@ -41,15 +39,12 @@ public class Chicken15686 {
 
 		chickDis = new int[House];
 
-
-
 		int count = 0;
 		for (int i = 1; i < N+1; i++) {
 			for (int j = 1; j < N+1; j++) {
 				if(map[i][j]==1) {
 					HouseLocation[count] = new ChickenPosition(i, j);
 					count++;
-					//HL.add(new ChickenPosition(i, j));
 				}
 			}
 		}
@@ -59,14 +54,13 @@ public class Chicken15686 {
 		for (int y = 1; y < N+1; y++) {
 			for (int x = 1; x < N+1; x++) {
 				if(map[y][x] == 2) {
-					tmp = Integer.MAX_VALUE;
 					dfs(y,x,0);
 				}
 			}
 		}
 
 		for (int i = 0; i < ChickenLocation.length; i++) {
-			System.out.println(ChickenLocation[i]);
+			//	System.out.println(ChickenLocation[i]);
 		}
 		System.out.println(result);
 
@@ -75,49 +69,40 @@ public class Chicken15686 {
 
 	static void dfs(int currentY, int currentX, int depth) {
 
-		//0. 도달?
+		//0. �룄�떖?
 		if(depth == M-1) {
-			
-			// 치킨점 좌표를 chickenLocation배열에 넣는다
+
+			// 移섑궓�젏 醫뚰몴瑜� chickenLocation諛곗뿴�뿉 �꽔�뒗�떎
 			ChickenLocation[depth] = new ChickenPosition(currentY, currentX);
 
-			tmp = chickenDistance(ChickenLocation, depth+1);
+			tmp = chickenDistance(ChickenLocation);
 
 			if(result>tmp) {
 				result = tmp;
 			}
-			ChickenLocation[depth] = null;
+
 			return;
+
+
 		}
 
-		//1. 방문체크
+		//1. 諛⑸Ц泥댄겕
 		visited[currentY][currentX] = 1;
-		// 치킨점 좌표를 chickenLocation배열에 넣는다
+		// 移섑궓�젏 醫뚰몴瑜� chickenLocation諛곗뿴�뿉 �꽔�뒗�떎
 		ChickenLocation[depth] = new ChickenPosition(currentY, currentX);
 
-		tmp = chickenDistance(ChickenLocation, depth+1);
-
-		if(result>tmp) {
-			result = tmp;
-		}
-
-		//2. 연결된길
+		//2. �뿰寃곕맂湲�
 		for (int y = 1; y < N+1; y++) {
 			for (int x = 1; x < N+1; x++) {
-				//3. 갈수있는길
+				//3. 媛덉닔�엳�뒗湲�
 				if(map[y][x] == 2 && visited[y][x] != 1) {
-					//4. 간다
+					//4. 媛꾨떎
 					dfs(y,x,depth+1);
 				}
 			}
-			
+
 		}
-		//5. 방문해지
-		ChickenLocation[depth] = null;	
-
 	}
-
-
 
 	static int countHouse() {
 		int count = 0;
@@ -132,14 +117,14 @@ public class Chicken15686 {
 		return count;
 	}
 
-	
-	static int chickenDistance(ChickenPosition[] chickLo, int dep) {
+
+	static int chickenDistance(ChickenPosition[] chickLo) {
 		int temp;
 		int dis = Integer.MAX_VALUE;
 
 		for (int i = 0; i < HouseLocation.length; i++) {
 			dis = Integer.MAX_VALUE;
-			for (int j = 0; j < dep; j++) {
+			for (int j = 0; j < M; j++) {
 
 				temp = (Math.abs(HouseLocation[i].Y -chickLo[j].Y)+Math.abs(HouseLocation[i].X -chickLo[j].X));
 
@@ -148,14 +133,12 @@ public class Chicken15686 {
 				}
 			}
 			chickDis[i] = dis;
-
 		}
 		int sum = 0;
 		for (int i = 0; i < chickDis.length; i++) {
 			sum+=chickDis[i];
-			//System.out.println(chickDis[i]);
+
 		}
-		//	System.out.println("sum"+sum);
 		return sum;
 	}
 
@@ -166,7 +149,7 @@ class ChickenPosition{
 	int X;
 
 	public ChickenPosition(int Y, int X) {
-		super();
+
 		this.Y = Y;
 		this.X = X;
 	}
