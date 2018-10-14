@@ -15,7 +15,7 @@ public class Chicken15686 {
 	static ChickenPosition HousePos;
 	static ChickenPosition[] HouseLocation;
 	static int result = Integer.MAX_VALUE;
-
+	static int tmp;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -59,54 +59,65 @@ public class Chicken15686 {
 		for (int y = 1; y < N+1; y++) {
 			for (int x = 1; x < N+1; x++) {
 				if(map[y][x] == 2) {
+					tmp = Integer.MAX_VALUE;
 					dfs(y,x,0);
 				}
 			}
 		}
 
+		for (int i = 0; i < ChickenLocation.length; i++) {
+			System.out.println(ChickenLocation[i]);
+		}
 		System.out.println(result);
 
 	}
 
-	static void dfs(int currentY, int currentX, int depth) {
-		int temp;
-		//0. µµ¥ﬁ?
-		if(depth == M-1) {
 
+	static void dfs(int currentY, int currentX, int depth) {
+
+		//0. ÎèÑÎã¨?
+		if(depth == M-1) {
+			
+			// ÏπòÌÇ®Ï†ê Ï¢åÌëúÎ•º chickenLocationÎ∞∞Ïó¥Ïóê ÎÑ£ÎäîÎã§
 			ChickenLocation[depth] = new ChickenPosition(currentY, currentX);
 
-			temp = chickenDistance(ChickenLocation);
+			tmp = chickenDistance(ChickenLocation, depth+1);
 
-			if(result>temp) {
-				result = temp;
+			if(result>tmp) {
+				result = tmp;
 			}
-
-			//	System.out.println();
-			for (int i = 0; i < ChickenLocation.length; i++) {
-				//		System.out.print(ChickenLocation[i]);
-			}
+			
 			return;
 		}
 
-		//1. πÊπÆ√º≈©
+		//1. Î∞©Î¨∏Ï≤¥ÌÅ¨
 		visited[currentY][currentX] = 1;
-		// ƒ°≈≤¡° ¡¬«•∏¶ chickenLocationπËø≠ø° ≥÷¥¬¥Ÿ
+		// ÏπòÌÇ®Ï†ê Ï¢åÌëúÎ•º chickenLocationÎ∞∞Ïó¥Ïóê ÎÑ£ÎäîÎã§
 		ChickenLocation[depth] = new ChickenPosition(currentY, currentX);
 
-		//2. ø¨∞·µ»±Ê
+		tmp = chickenDistance(ChickenLocation, depth+1);
+
+		if(result>tmp) {
+			result = tmp;
+		}
+
+		//2. Ïó∞Í≤∞ÎêúÍ∏∏
 		for (int y = 1; y < N+1; y++) {
 			for (int x = 1; x < N+1; x++) {
-				//3. ∞•ºˆ¿÷¥¬±Ê
+				//3. Í∞àÏàòÏûàÎäîÍ∏∏
 				if(map[y][x] == 2 && visited[y][x] != 1) {
-					//4. ∞£¥Ÿ
+					//4. Í∞ÑÎã§
 					dfs(y,x,depth+1);
 				}
 			}
+			
 		}
-		//5. πÊπÆ«ÿ¡ˆ
+		//5. Î∞©Î¨∏Ìï¥ÏßÄ
+		ChickenLocation[depth] = null;	
 
-		//visited[currentY][currentX] = 0;
 	}
+
+
 
 	static int countHouse() {
 		int count = 0;
@@ -121,13 +132,14 @@ public class Chicken15686 {
 		return count;
 	}
 
-	static int chickenDistance(ChickenPosition[] chickLo) {
+	
+	static int chickenDistance(ChickenPosition[] chickLo, int dep) {
 		int temp;
 		int dis = Integer.MAX_VALUE;
 
 		for (int i = 0; i < HouseLocation.length; i++) {
 			dis = Integer.MAX_VALUE;
-			for (int j = 0; j < chickLo.length; j++) {
+			for (int j = 0; j < dep; j++) {
 
 				temp = (Math.abs(HouseLocation[i].Y -chickLo[j].Y)+Math.abs(HouseLocation[i].X -chickLo[j].X));
 
@@ -141,8 +153,9 @@ public class Chicken15686 {
 		int sum = 0;
 		for (int i = 0; i < chickDis.length; i++) {
 			sum+=chickDis[i];
+			//System.out.println(chickDis[i]);
 		}
-
+		//	System.out.println("sum"+sum);
 		return sum;
 	}
 
