@@ -38,10 +38,7 @@ public class Chicken15686 {
 		ChickenLocation = new ChickenPosition[M]; 
 		HouseLocation = new ChickenPosition[House];
 
-
 		chickDis = new int[House];
-
-
 
 		int count = 0;
 		for (int i = 1; i < N+1; i++) {
@@ -77,7 +74,6 @@ public class Chicken15686 {
 
 		//0. 도달?
 		if(depth == M-1) {
-			
 			// 치킨점 좌표를 chickenLocation배열에 넣는다
 			ChickenLocation[depth] = new ChickenPosition(currentY, currentX);
 
