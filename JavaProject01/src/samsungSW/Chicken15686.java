@@ -30,6 +30,14 @@ public class Chicken15686 {
 				map[y][x] = sc.nextInt();
 			}
 		}
+		
+		for (int y = 1; y < 51; y++) {
+			for (int x = 1; x < 51; x++) {
+			//	System.out.print(0+" ");
+			}
+			//System.out.println();
+		}
+		
 
 		House = countHouse();
 
@@ -54,6 +62,7 @@ public class Chicken15686 {
 			for (int x = 1; x < N+1; x++) {
 				if(map[y][x] == 2) {
 					dfs(y,x,0);
+					//visited[y][x] = 1;
 				}
 			}
 		}
@@ -62,7 +71,6 @@ public class Chicken15686 {
 			//	System.out.println(ChickenLocation[i]);
 		}
 		System.out.println(result);
-
 	}
 
 
@@ -78,10 +86,7 @@ public class Chicken15686 {
 			if(result>tmp) {
 				result = tmp;
 			}
-
 			return;
-
-
 		}
 
 		//1. 諛⑸Ц泥댄겕
@@ -123,20 +128,25 @@ public class Chicken15686 {
 		for (int i = 0; i < HouseLocation.length; i++) {
 			dis = Integer.MAX_VALUE;
 			for (int j = 0; j < M; j++) {
-
+				//i번째 집에 따른 j번째 치킨집의 거리
 				temp = (Math.abs(HouseLocation[i].Y -chickLo[j].Y)+Math.abs(HouseLocation[i].X -chickLo[j].X));
-
+				//i번째 집과 최소 거리에 있는 치킨집 거리를 찾는다
 				if(temp<dis) {
 					dis = temp;
 				}
 			}
+			//치킨 거리를 배열에 담는다. 
 			chickDis[i] = dis;
 		}
 		int sum = 0;
 		for (int i = 0; i < chickDis.length; i++) {
 			sum+=chickDis[i];
-
 		}
+
+		for (int i = 0; i < chickDis.length; i++) {
+			chickDis[i] = 0;
+		}
+
 		return sum;
 	}
 
