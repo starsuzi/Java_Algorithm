@@ -40,9 +40,9 @@ public class Virus14502 {
 
 
 		System.out.println(max);
-		
+
 	}
-	
+
 	static int bfs() {
 		for (int y = 0; y < N; y++) {
 			for (int x = 0; x < M; x++) {
@@ -54,12 +54,12 @@ public class Virus14502 {
 		}
 
 		while(queue.isEmpty() == false) {
-			
+
 			//1. q에서 꺼낸다
 			Position current = queue.poll();
-			
-		//	System.out.println(current);
-		//	System.out.println(depth);
+
+			//	System.out.println(current);
+			//	System.out.println(depth);
 			//2. 연결된길
 			for (int i = 0; i < 4; i++) {
 				int targetY = current.y + dy[i];
@@ -75,7 +75,7 @@ public class Virus14502 {
 				}
 			}
 		}
-		
+
 		int count = 0;
 		for (int y = 0; y < N; y++) {
 			for (int x = 0; x < M; x++) {
@@ -86,22 +86,22 @@ public class Virus14502 {
 		}
 		return count;
 	}
-	
+
 
 	static void dfs(int current, int wall) {
 		//0. 도달?
 		//System.out.println(current%M+","+current/M+","+wall);
 		if(wall==3) {		
-			
+
 			for (int y = 0; y < N; y++) {
 				for (int x = 0; x < M; x++) {
 					//System.out.print(map[y][x]);
 				}
 				//System.out.println();
 			}
-			
 
-			
+
+
 			int temp[][];
 			temp = new int[N][M];
 			for (int mapy = 0; mapy < N; mapy++) {
@@ -109,13 +109,13 @@ public class Virus14502 {
 					temp[mapy][mapx] = map[mapy][mapx];		
 				}
 			}
-			
+
 			int currentY = current/M;
 			int currentX = current%M;
 
 			map[currentY][currentX] = 1;
-			
-			
+
+
 			//bfs 호출
 			int result = bfs();
 			for (int mapy = 0; mapy < N; mapy++) {
@@ -127,6 +127,7 @@ public class Virus14502 {
 			if(max<result) {
 				max = result;
 			}
+			
 			return;
 
 		} else {
