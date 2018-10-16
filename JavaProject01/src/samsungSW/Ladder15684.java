@@ -8,8 +8,8 @@ public class Ladder15684 {
 	static int[][] givenDot;
 	static int[][] map;
 	static int[][] visited;
-	static int[] dx = {-1,+1,0};
-	static int[] dy = {0,0,+1};
+	static int[] dx = {-1,+1};
+	static int[] dy = {0,0};
 	static 	int count = 0;
 	public static void main(String[] args) {
 
@@ -85,6 +85,11 @@ public class Ladder15684 {
 		map[currentY][currentX] = 1;
 		map[currentY][currentX+1] = 1;
 		
+		//map을 temp에 담는다
+		//지나가는 함수 호출
+		//depth가 3이 넘어가면 그냥 return
+		//다시 temp를 map에 담는다
+		
 		System.out.println("currentX: "+currentX+" currentY: "+currentY+" depth: "+depth);
 
 		for (int i = 0; i < H+1; i++) {
@@ -134,5 +139,9 @@ public class Ladder15684 {
 		 map[currentY][currentX] = 0;
 		 map[currentY][currentX+1] = 0;
 	}
-
+	static void go() {
+		for (int x = 1; x < N+1; x++) {
+			
+		}
+	}
 }
