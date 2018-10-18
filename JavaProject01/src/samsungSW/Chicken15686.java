@@ -30,14 +30,14 @@ public class Chicken15686 {
 				map[y][x] = sc.nextInt();
 			}
 		}
-		
+
 		for (int y = 1; y < 51; y++) {
 			for (int x = 1; x < 51; x++) {
-			//	System.out.print(0+" ");
+				//	System.out.print(0+" ");
 			}
 			//System.out.println();
 		}
-		
+
 
 		House = countHouse();
 
@@ -58,10 +58,10 @@ public class Chicken15686 {
 
 
 
-		for (int y = 1; y < N+1; y++) {
-			for (int x = 1; x < N+1; x++) {
+		for (int y = 0; y < N+1; y++) {
+			for (int x = 0; x < N+1; x++) {
 				if(map[y][x] == 2) {
-					dfs(y,x,0);
+					dfs(y*(N+1)+x,0);
 					//visited[y][x] = 1;
 				}
 			}
@@ -74,7 +74,10 @@ public class Chicken15686 {
 	}
 
 
-	static void dfs(int currentY, int currentX, int depth) {
+	static void dfs(int current, int depth) {
+
+		int currentY = current/(N+1);
+		int currentX = current%(N+1);
 
 		//0. �룄�떖?
 		if(depth == M-1) {
@@ -95,15 +98,19 @@ public class Chicken15686 {
 		ChickenLocation[depth] = new ChickenPosition(currentY, currentX);
 
 		//2. �뿰寃곕맂湲�
-		for (int y = 1; y < N+1; y++) {
-			for (int x = 1; x < N+1; x++) {
-				//3. 媛덉닔�엳�뒗湲�
-				if(map[y][x] == 2 && visited[y][x] != 1) {
-					//4. 媛꾨떎
-					dfs(y,x,depth+1);
-				}
-			}
+		for (int i = current+1; i < (N+1)*(N+1); i++) {
+			int targetY = i/(N+1);
+			int targetX = i%(N+1);
 
+			if(targetY>0 && targetX>0 && targetY<N+1 && targetX <N+1) {
+
+				//3. 媛덉닔�엳�뒗湲�
+				if(map[targetY][targetX] == 2 && visited[targetY][targetX] != 1) {
+					//4. 媛꾨떎
+					dfs(i,depth+1);
+				}
+
+			}
 		}
 	}
 
