@@ -13,6 +13,7 @@ public class Ladder15684 {
 	static 	int count = 0;
 	static int[][] path;
 	static int[][] copiedMap;
+	static int[][] originMap;
 	static int answer = -1;
 
 	public static void main(String[] args) {
@@ -34,6 +35,7 @@ public class Ladder15684 {
 		visited = new int[H+1][N+1];
 		copiedMap = new int[H+1][N+1];
 		path = new int[H+1][N+1];
+		originMap = new int[H+1][N+1];
 
 		for (int i = 0; i < M; i++) {
 			int mapy = givenDot[i][0];
@@ -43,6 +45,9 @@ public class Ladder15684 {
 		}
 
 		//print
+
+		originMap = CopyMap(map);
+
 
 		copiedMap = CopyMap(map);
 		for (int i = 1; i < N+1; i++) {
@@ -55,7 +60,7 @@ public class Ladder15684 {
 			if(isArrived(visited[H][i]) == false) {
 				System.out.println(isArrived(visited[H][i]));
 				ClearMap(visited);
-				//break;
+				break;
 			}
 			ClearMap(visited);
 			if(i==N) {
@@ -71,26 +76,20 @@ public class Ladder15684 {
 			for (int x = 1; x < N; x++) {
 
 				if(map[y][x] == 0 && map[y][x+1] == 0) {
-					//dfs(y*(N+1)+x, 1);
+					dfs(y*(N+1)+x, 1);
 				}
 
 			}
 		}
 
 
-
-
-		//System.out.println("original");
-		for (int i = 0; i < H+1; i++) {
-			for (int j = 0; j < N+1; j++) {
-				//System.out.print(map[i][j]);
-			}
-			//System.out.println();
+		if(answer>3) {
+			System.out.println(3);
+		}
+		else {
+			System.out.println(answer);
 		}
 
-
-		//	System.out.println("count"+count);
-		System.out.println(answer);
 
 	}
 
@@ -117,44 +116,40 @@ public class Ladder15684 {
 		map[currentY][currentX] = 1;
 		map[currentY][currentX+1] = 1;
 
-		//map을 temp에 담는다
-		//지나가는 함수 호출
-		//depth가 3이 넘어가면 그냥 return- 해결
-		//다시 temp를 map에 담는다
-
 		System.out.println("currentX: "+currentX+" currentY: "+currentY+" depth: "+depth);
 
-		for (int i = 0; i < H+1; i++) {
-			for (int j = 0; j < N+1; j++) {
-				//System.out.print(map[i][j]);
-			}
-			//System.out.println();
-		}
-		//System.out.println();
-
 		//go함수 호출
+		answer = Integer.MAX_VALUE;
 		copiedMap = CopyMap(map);
 
 		for (int i = 1; i < N+1; i++) {
 			go(1, i, 1, true);
 			System.out.println("iteration"+i);
-			print(map);
-			System.out.println();
 			print(copiedMap);
 			System.out.println();
 			print(visited);
 			System.out.println(isArrived(visited[H][i]));
-			//System.out.println("end"+visited[H][i]);
-			System.out.println(isArrived(visited[H][i]));
 			if(isArrived(visited[H][i]) == false) {
+				System.out.println();
+				print(visited);
 				ClearMap(visited);
 				break;
 			}
-			ClearMap(visited);
+
 			if(i == N) {
-				answer = depth;
+				System.out.println();
+				print(copiedMap);
+				System.out.println();
+				print(visited);
+
+				int temp = depth;
+				if(answer > temp) {
+					answer = temp;
+				}
 				return;
 			}
+			ClearMap(visited);
+
 		}
 
 
@@ -176,6 +171,18 @@ public class Ladder15684 {
 		//5.방문해지
 		map[currentY][currentX] = 0;
 		map[currentY][currentX+1] = 0;
+	}
+
+	static int count(int[][] temp) {
+		int sum = 0;
+		for (int i = 1; i < H+1; i++) {
+			for (int j = 1; j < N+1; j++) {
+				if(temp[i][j] == 1) {
+					sum++;
+				}
+			}
+		}
+		return (sum/2);
 	}
 
 	static boolean isArrived(int end) {
@@ -210,80 +217,137 @@ public class Ladder15684 {
 		}
 	}
 
-	static void go(int currentY, int currentX, int depth, boolean isDown) {
-		//0.도달
-		if(currentY==N+1) {
-			visited[currentY][currentX] = 1;
-			//	return;
+	static int RowSum(int[][] temp) {
+		int sum = 0;
+		for (int i = 1; i < N+1; i++) {
+			if(temp[H][i] == 1) {
+				sum++;
+			}
 		}
 
-		else {
+
+		return sum;
+	}
+
+	static void go(int currentY, int currentX, int depth, boolean isDown) {
+
+		if(currentY==H) {
 			//1.방문체크
 			visited[currentY][currentX] = 1;
+			if( isDown != false 
+					&&(currentX+1 < N+1) 
+					&& copiedMap[currentY][currentX+1] == 1
+					&& copiedMap[currentY][currentX] == 1) {
 
-			//2.연결된길
-			for (int i = 0; i < 3; i++) {
+				visited[currentY][currentX+1] = 1;
+				return;
+			}
+			else if( isDown != false 
+					&& (currentX > 1)
+					&& (copiedMap[currentY][currentX-1] == 1)
+					&& copiedMap[currentY][currentX] == 1) {
 
-				int targetY = currentY+dy[i];
-				int targetX = currentX + dx[i];	
-				//3.갈수있는길	
-				if(targetY>0 && targetX>0 && targetY<H+1 && targetX<N+1 && targetY >= currentY) {
-					//if(visited[targetY][targetX] != 1) {
-
-					//처음부터 1111놓인 경우
-
-					/* To Do 
-					 * 1. If-else Condition Change
-					 * 2. 빈칸 채우기
-					 * 3. 돌려보기
-					 * */
-
-					if((currentX-1 > 0) && (currentX+1 < N+1)) {
-						if(
-								copiedMap[currentY][currentX] == 1
-								&& copiedMap[currentY][currentX-1] == 1
-								&& copiedMap[currentY][currentX+1] == 1
-								&& isDown != false
-								) {
+				visited[currentY][currentX-1] = 1;
+				return;
+			}
+			return;
+		}
 
 
-							int countRight = 0;
-							int tempX = currentX+1;
+		//1.방문체크
+		visited[currentY][currentX] = 1;
 
-							while(copiedMap[currentY][tempX] == 1) {
-								countRight++;
-								tempX++;
-							}
+		//2.연결된길
+		for (int i = 0; i < 3; i++) {
 
-							System.out.println(countRight);
-							if((countRight%2) == 1) {
-								go(currentY, currentX+1, depth+1, false);
-								return;
-							}
-							else if((countRight%2) == 0) {
-								go(currentY, currentX -1, depth+1, false);
-								return;
-							} 
-						}	
+			int targetY = currentY+dy[i];
+			int targetX = currentX + dx[i];	
+			//3.갈수있는길	
+			if(targetY>0 && targetX>0 && targetY<H+1 && targetX<N+1 && targetY >= currentY) {
+
+				/* To Do 
+				 * 1. If-else Condition Change
+				 * 2. 빈칸 채우기
+				 * 3. 돌려보기
+				 * */
+
+				if(
+						(currentX > 1) && (currentX+1 < N+1) &&
+						copiedMap[currentY][currentX] == 1
+						&& copiedMap[currentY][currentX-1] == 1
+						&& copiedMap[currentY][currentX+1] == 1
+						&& isDown != false
+						) {
+
+
+					int countRight = 0;
+					int tempX = currentX;
+
+					while(tempX <N+1 && copiedMap[currentY][tempX] == 1) { //error check
+						countRight++;
+						tempX++;
 					}
 
-					
+					if((countRight%2) == 0) {
+						go(currentY, currentX+1, depth+1, false);
+						return;
+					}
+					else if((countRight%2) == 1) {
+						go(currentY, currentX-1, depth+1, false);
+						return;
+					} 
+				}	
 
-					//양옆
-					else if(currentY == targetY && isDown != false && copiedMap[targetY][targetX] == 1 && copiedMap[currentY][currentX] == 1) {
+
+				//양옆
+				else if(currentY == targetY && isDown != false && copiedMap[targetY][targetX] == 1) {
+					if(copiedMap[currentY][currentX] == 1) {
 						go(targetY, targetX, depth+1, false);
 						return;
 					}
+					else if(copiedMap[currentY][currentX] == 0){
+						if(
+								(currentX > 1) && (currentX+1 < N+1)
+								&& copiedMap[currentY][currentX - 1] == 1
+								&& copiedMap[currentY][currentX + 1] == 1
+								&& (currentX % 2) == 0
+								) {
+							go(currentY, currentX-1, depth+1, false);
+							return;
+						}
+						else if(
+								(currentX > 1) && (currentX+1 < N+1)
+								&& copiedMap[currentY][currentX - 1] == 1
+								&& copiedMap[currentY][currentX + 1] == 1
+								&& (currentX % 2) == 0
+								) {
+							go(currentY, currentX+1, depth+1, false);
+							return;
+						}
+						else if(
+								(currentX > 1) && (currentX+1 < N+1)
+								&& (copiedMap[currentY][currentX - 1] == 1
+								|| copiedMap[currentY][currentX + 1] == 1
+								&& copiedMap[targetY][targetX] == 1
+								)
+								) {
+							go(targetY, targetX, depth+1, false);
+							return;
+						}
 
-					//내려간다
-					else if (currentY+1 == targetY) {
-						isDown = true;
-						go(targetY, targetX, depth+1, true);
-						return;
 					}
-					//}
+
 				}
+
+				//내려간다
+				else if (currentY+1 == targetY) {
+					isDown = true;
+					go(targetY, targetX, depth+1, true);
+					return;
+				}
+				//}
 			}
 		}
+
 	}
 }
