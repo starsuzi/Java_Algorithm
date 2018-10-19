@@ -9,12 +9,8 @@ public class CCTV15683 {
 	static int N,M;
 	static int[][] map;
 	static int[][] copiedMap;
-	static int[] dx1 = {};
-	static int[] dy1 = {};
-	static int[] dx2 = {};
-	static int[] dy2 = {};
-	static int[] dx5 = {+1,0,-1,0};
-	static int[] dy5 = {0,+1,0,-1};
+	static int[] dx = {+1,0,-1,0};
+	static int[] dy = {0,+1,0,-1};
 	static int result = Integer.MAX_VALUE;
 	static Queue<CCTVPosition> queue;
 
@@ -37,6 +33,7 @@ public class CCTV15683 {
 
 		copiedMap = copy(map);
 		call5(map);
+		call4(map);
 
 	}
 
@@ -53,40 +50,161 @@ public class CCTV15683 {
 
 	}
 
+	static void CCTV3(int current, int depth) {
+
+	}
+	
+	static void CCTV4(int current, int depth) {
+
+		int currentY = current/M;
+		int currentX = current%M;
+
+		//2.연결된길
+		for (int i = 0; i < 4; i++) {
+			int targetY = currentY + dy[i];
+			int targetX = currentX + dx[i];
+			//3.갈수있는길
+			if(targetY >= 0 && targetX >= 0 && targetY < N && targetX < M) {
+				int tempX = targetX;
+				int tempY = targetY;
+
+				if(i==0) {
+					//동
+					east(tempY, tempX);
+				}
+				if(i==1 || i==3) {
+					//남
+					//북
+					south(tempY, tempX);
+					north(tempY, tempX);
+				}
+				if(i==2) {
+					//서
+					west(tempY, tempX);
+				}
+
+			}
+		}
+
+		//1.방문체크
+		copiedMap[currentY][currentX] = 4;
+	//	print(copiedMap);
+	}
+	
+	
 	static void CCTV5(int current, int depth) {
 
 		int currentY = current/M;
 		int currentX = current%M;
 
-		//1.방문체크
-		copiedMap[currentY][currentX] = 7;
 		//2.연결된길
 		for (int i = 0; i < 4; i++) {
-			int targetY = currentY + dy5[i];
-			int targetX = currentX + dx5[i];
+			int targetY = currentY + dy[i];
+			int targetX = currentX + dx[i];
 			//3.갈수있는길
 			if(targetY >= 0 && targetX >= 0 && targetY < N && targetX < M) {
 				int tempX = targetX;
-				//동
-				while(true) {
-					if(copiedMap[targetY][tempX] == 6 
-							|| tempX > M-2) {
-						break;
-					}
-					tempX++;
-				}
-				targetX = tempX;
-				//4.간다
-				//CCTV5(targetY*M+targetX, depth+1);
+				int tempY = targetY;
 
+				if(i==0) {
+					//동
+					east(tempY, tempX);
+				}
+				if(i==1) {
+					//남
+					south(tempY, tempX);
+				}
+				if(i==2) {
+					//서
+					west(tempY, tempX);
+				}
+				if(i==3) {
+					//북
+					north(tempY, tempX);
+				}
 			}
 		}
 
+		//1.방문체크
+		copiedMap[currentY][currentX] = 5;
+	//	print(copiedMap);
+		result = squaredArea(copiedMap);
+		System.out.println(result);
+	}
+	
+	static void east(int targetY, int targetX) {
 
-		//5.방문해지
+		//동
+		System.out.println("동");
+		while(true) {
 
+			if(copiedMap[targetY][targetX] == 6 || targetX > M-2) {
+				if(copiedMap[targetY][targetX] != 6) {
+					copiedMap[targetY][targetX] = 7;
+				}
+				break;
+			}
+			copiedMap[targetY][targetX] = 7;
+			targetX++;
+
+		}
+		print(copiedMap);
+	
+	}
+	
+	static void south(int targetY, int targetX) {
+		System.out.println("남");
+
+		while(true) {
+			if(copiedMap[targetY][targetX] == 6 || targetY > N - 2) 
+			{
+				if(copiedMap[targetY][targetX] != 6) {
+					copiedMap[targetY][targetX] = 7;	
+				}
+				break;
+			}
+			copiedMap[targetY][targetX] = 7;
+			targetY++;
+		}
+		print(copiedMap);
 	}
 
+	
+	static void west(int targetY, int targetX) {
+		//서
+		System.out.println("서");
+		while(true) {
+			if(copiedMap[targetY][targetX] == 6 || targetX < 1) {
+				if(copiedMap[targetY][targetX] != 6 ) {
+					copiedMap[targetY][targetX] = 7;	
+				}
+				copiedMap[targetY][targetX] = 7;
+				break;
+			}
+			copiedMap[targetY][targetX] = 7;
+			targetX --;
+		}
+		print(copiedMap);
+	}
+	
+	static void north(int targetY, int targetX) {
+		//북
+		System.out.println("북");
+		while(true) {
+			if(copiedMap[targetY][targetX] == 6 || targetY<1) {
+				if(copiedMap[targetY][targetX] != 6) {
+					copiedMap[targetY][targetX] = 7;
+				}
+
+				break;
+			}
+			copiedMap[targetY][targetX] = 7;
+			targetY -- ;
+		}
+		print(copiedMap);
+	
+	}
+	
 	static void print(int[][] temp) {
 		for (int i = 0; i < temp.length; i++) {
 			for (int j = 0; j < temp[0].length; j++) {
@@ -138,6 +256,48 @@ public class CCTV15683 {
 		}
 	}
 
+	static void call4 (int[][] temp){
+		for (int i = 0; i < temp.length; i++) {
+			for (int j = 0; j < temp[0].length; j++) {
+				if(temp[i][j] == 4) {
+					//queue.add(new CCTVPosition(i, j));
+					CCTV4(i*M+j, 1);
+				}
+			}
+		}
+	}
+	static void call3 (int[][] temp){
+		for (int i = 0; i < temp.length; i++) {
+			for (int j = 0; j < temp[0].length; j++) {
+				if(temp[i][j] == 3) {
+					//queue.add(new CCTVPosition(i, j));
+					CCTV3(i*M+j, 1);
+				}
+			}
+		}
+	}
+	
+	static void call2 (int[][] temp){
+		for (int i = 0; i < temp.length; i++) {
+			for (int j = 0; j < temp[0].length; j++) {
+				if(temp[i][j] == 4) {
+					//queue.add(new CCTVPosition(i, j));
+					CCTV2(i*M+j, 1);
+				}
+			}
+		}
+	}
+	static void call1 (int[][] temp){
+		for (int i = 0; i < temp.length; i++) {
+			for (int j = 0; j < temp[0].length; j++) {
+				if(temp[i][j] == 4) {
+					//queue.add(new CCTVPosition(i, j));
+					CCTV1(i*M+j, 1);
+				}
+			}
+		}
+	}
+	
 }
 
 class CCTVPosition{
