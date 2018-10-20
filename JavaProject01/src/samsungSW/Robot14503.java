@@ -26,27 +26,15 @@ public class Robot14503 {
 			}
 		}
 
-		for (int y = 0; y < N; y++) {
-			for (int x = 0; x < M; x++) {
-				//	System.out.print(map[y][x]);
-			}
-			//System.out.println();
-		}
-
-
-
 		dfs(c,r,transfer(d));	
 
 		int count = 0;
 		for (int y = 0; y < N; y++) {
 			for (int x = 0; x < M; x++) {
-				//	System.out.print(map[y][x]);
-
 				if(map[y][x] == 2) {
 					count++;
 				}
 			}
-			//System.out.println();
 		}
 
 		System.out.println(count);
@@ -55,33 +43,23 @@ public class Robot14503 {
 
 	static void dfs(int currentX, int currentY, int dir) {
 
-
 		dirCheck(dir);
-	//	System.out.println("(currentx, currenty) ("+currentY+","+currentX+")");
 
 		//1.방문체크
 		if(map[currentY][currentX] == 0) {
 			map[currentY][currentX] = 2;
 		}
 
-		for (int y = 0; y < N; y++) {
-			for (int x = 0; x < M; x++) {
-		//		System.out.print(map[y][x]);
-			}
-		//	System.out.println();
-		}
-
 		//2.연결된길
-		//int count = 4;
+
 		for (int i = dir+1; i < dir+5; i++) {
 
 			int targetY = currentY + dy[i%4];
 			int targetX = currentX + dx[i%4];
 			//3.갈수있는길
 			if(targetY>=0 && targetX>=0 && targetX<M && targetY<N) {
-				//System.out.println(count);
+				
 				if(map[targetY][targetX] == 0) {
-					//count--;
 					//4.간다
 					dfs(targetX, targetY, i%4);
 					return;
@@ -89,10 +67,7 @@ public class Robot14503 {
 
 			}
 		}
-		//if(count==4) {
-		//네방향 모두 벽이나 이미 청소
-		//후진가능
-	//	System.out.println("막힘");
+		
 		int newtargetY = currentY + dy[(dir+2)%4];
 		int newtargetX = currentX + dx[(dir+2)%4];
 
@@ -108,23 +83,6 @@ public class Robot14503 {
 		}
 	}
 	//}
-
-	static int left(int dir) {
-
-		if(dir == 1) {
-			return 2;
-		}
-		else if(dir == 3) {
-			return 0;
-		}
-		else if(dir == 2) {
-			return 3;
-		}
-		else {
-			return 1;
-		}
-
-	}
 
 	static int transfer(int dir) {
 		if(dir == 1) {
