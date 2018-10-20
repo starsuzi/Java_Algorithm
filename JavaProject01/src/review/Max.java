@@ -44,11 +44,6 @@ public class Max {
 			
 			int sum = 0;
 			
-			
-			for (int i = 0; i < history.length; i++) {
-				//System.out.print(history[i]+" ");
-			}//System.out.println();
-			
 			for (int i = 0; i < N-1; i++) {
 				int diff = Math.abs(history[i]-history[i+1]);
 				sum = sum+diff;
