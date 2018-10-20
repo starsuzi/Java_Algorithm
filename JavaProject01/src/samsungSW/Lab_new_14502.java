@@ -63,14 +63,6 @@ public class Lab_new_14502 {
 		//도달?
 		if(wall == 2) {
 
-			//	System.out.println();
-			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < M; j++) {
-					//			System.out.print(map[i][j]);
-				}
-				//		System.out.println();
-			}
-
 			//지금까지의 map을 temp에 담아줘야 한다.
 			for (int y = 0; y < N; y++) {
 				for (int x = 0; x < M; x++) {
@@ -80,15 +72,8 @@ public class Lab_new_14502 {
 			//중요!!!!!!!!!!!!!!!
 			map[currentY][currentX] = 1;
 
-			//	System.out.println();
-			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < M; j++) {
-		//			System.out.print(map[i][j]);
-				}
-		//		System.out.println();
-			}
 			int cnt = bfs();
-	//		System.out.println(cnt);
+
 
 			for (int y = 0; y < N; y++) {
 				for (int x = 0; x < M; x++) {
